@@ -15,3 +15,5 @@
         margin: 0;
     }
 </style>
+
+<style src="./styles/app.css"></style>
