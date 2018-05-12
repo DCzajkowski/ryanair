@@ -1,4 +1,4 @@
-# rayanair-pwa
+# Ryanair
 
 > A Vue.js project
 

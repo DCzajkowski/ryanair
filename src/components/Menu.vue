@@ -1,5 +1,5 @@
 <template>
-    <div class="flex h-full justify-center">
+    <div class="flex h-full justify-center bg-darken">
         <div class="mt-16 flex flex-col max-w-lg">
             <div class="mb-32">
                 <img src="../assets/logo.png">

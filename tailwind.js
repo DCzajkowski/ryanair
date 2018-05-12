@@ -130,7 +130,8 @@ let colors = {
 
   'brand-blue': '#22356b',
   'brand-yellow': '#fcc210',
-  'white-50': 'rgba(255, 255, 255, .50)',
+  'white-50': 'rgba(255, 255, 255, .5)',
+  'darken': 'rgba(72, 94, 109, .4)',
 }
 
 module.exports = {
@@ -684,6 +685,7 @@ module.exports = {
     '8': '2rem',
     '16': '4rem',
     '32': '8rem',
+    '48': '12rem',
   },
 
 

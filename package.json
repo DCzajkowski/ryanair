@@ -1,5 +1,5 @@
 {
-  "name": "rayanair-pwa",
+  "name": "ryanair-pwa",
   "version": "1.0.0",
   "description": "A Vue.js project",
   "author": "Dariusz Czajkowski <dare.czajkowski@gmail.com>",
@@ -15,7 +15,8 @@
     "phaser": "^3.7.1",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1",
-    "vuex": "^3.0.1"
+    "vuex": "^3.0.1",
+    "vuex-persistedstate": "^2.5.2"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.5",

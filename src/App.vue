@@ -1,17 +1,17 @@
 <template>
     <div id="app" class="bg-sky h-screen font-sans">
         <router-view></router-view>
-        <score></score>
+        <coins></coins>
     </div>
 </template>
 
 <script>
-    import Score from '@/components/Score'
+    import Coins from '@/components/Coins'
 
     export default {
         name: 'app',
         components: {
-            Score,
+            Coins,
         },
     }
 </script>
