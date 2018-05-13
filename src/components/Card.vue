@@ -1,7 +1,8 @@
 <template>
     <div>
         <img @click="$router.push({ name: 'Menu' })" v-if="a === 1" src="/static/card1.png" class="h-screen w-screen">
-        <img @click="$router.push({ name: 'Menu' })" v-else src="/static/zegarek.png" class="h-screen w-screen">
+        <img @click="$router.push({ name: 'Menu' })" v-if="a === 2" src="/static/zegarek.png" class="h-screen w-screen">
+        <img @click="$router.push({ name: 'Menu' })" v-else src="/static/samolot.png" class="h-screen w-screen">
     </div>
 </template>
 
@@ -15,7 +16,7 @@
             }
         },
         mounted() {
-            this.a = _.random(1, 2)
+            this.a = _.random(1, 3)
         },
     }
 </script>
