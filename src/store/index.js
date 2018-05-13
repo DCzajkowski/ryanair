@@ -2,6 +2,8 @@ import Vue from 'vue'
 
 Vue.config.devtools = true
 
+import _ from 'lodash'
+
 import Vuex from 'vuex'
 Vue.use(Vuex)
 
@@ -19,6 +21,16 @@ export default new Vuex.Store({
             { id: 3, url: 'plane-red.png', price: 300, unlocked: false },
             { id: 4, url: 'plane-purple.png', price: 200, unlocked: false },
         ],
+        // products: [
+        //     {
+        //         id: 1,
+        //         name: 'Chips',
+        //         oldPrice: '$3',
+        //         newPrice: '$2.7',
+        //         image: 'https://i.imgur.com/8L9oQvg.png',
+        //         qr: 'https://i.imgur.com/hDxZELh.png',
+        //     },
+        // ],
     },
     mutations: {
         coins(state, coins) {
@@ -41,5 +53,8 @@ export default new Vuex.Store({
         planes(state) {
             return state.planes
         },
+        // randomProduct(state) {
+        //     return state.products[_.random(0, state.products.length - 1)]
+        // },
     },
 })
