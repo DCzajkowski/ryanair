@@ -1,7 +1,7 @@
 <template>
     <div class="flex h-full justify-center bg-darken">
         <div class="absolute pin-l pin-t -ml-16" @click="$router.push({ name: 'Menu' })">
-            <img src="../assets/logo.png">
+            <img src="../assets/logo.png" class="h-32">
         </div>
 
         <div class="flex mt-48 w-full">

@@ -38,6 +38,9 @@ export default new Vuex.Store({
         coins(state, coins) {
             state.coins = coins
         },
+        score(state, score) {
+            state.score = score
+        },
         subtractCoins(state, coins) {
             state.coins -= coins
         },
@@ -46,14 +49,22 @@ export default new Vuex.Store({
         },
         addCoin(state) {
             state.coins += 1
+        },
+        addCoinInGame(state) {
             state.coinsInGame += 1
         },
         addCoins(state, amount) {
             state.coins += amount
+        },
+        addCoinsInGame(state, amount) {
             state.coinsInGame += amount
         },
         addToScore(state, score) {
-            state.score += score
+            if (state.score + score >= 0) {
+                state.score += score
+            } else {
+                state.score = 0
+            }
         },
         addScore(state) {
             state.score += 10

@@ -9,10 +9,10 @@
     export default {
         computed: {
             coins() {
-                return this.$store.getters.coins
+                return parseInt(this.$store.getters.coins)
             },
             score() {
-                return this.$store.getters.score
+                return parseInt(this.$store.getters.score)
             },
         },
     }
