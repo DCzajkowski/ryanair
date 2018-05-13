@@ -32,16 +32,16 @@
                 <div class="flex-1 p-4">
 
                     <div class="bg-white-50 rounded-lg w-full h-full relative">
-                        <div class="absolute" style="top: 2rem; left: 4rem;" @click="buyCase(1, 1000)">
-                            <img src="@/assets/case1.png">
+                        <div class="absolute" style="top: 2rem; left: 2rem;" @click="buyCase(1, 1000)">
+                            <img src="/static/walizka_zielona.png" class="w-64">
                         </div>
-                        <div class="absolute" style="top: 3rem; right: 4rem;" @click="buyCase(2, 3000)">
-                            <img src="@/assets/case2.png">
+                        <div class="absolute" style="left: 21rem; top: 2rem;" @click="buyCase(2, 3000)">
+                            <img src="/static/walizka_czerwona.png" class="w-64">
                         </div>
-                        <div class="absolute" style="bottom: 1rem; left: 13rem;" @click="buyCase(3, 5000)">
-                            <img src="@/assets/case3.png">
+                        <div class="absolute" style="top: 16rem; left: 9rem;" @click="buyCase(3, 5000)">
+                            <img src="/static/zolta_walizka.png" class="w-64">
                         </div>
-                        <div class="absolute flex items-center justify-center text-brand-yellow text-2xl font-semibold p-2 bg-white-50 rounded-full pointer-events-none" style="top: 6.5rem; left: 4.6rem;">
+                        <div class="absolute flex items-center justify-center text-brand-yellow text-2xl font-semibold p-2 bg-white-50 rounded-full pointer-events-none" style="top: 4.5rem; left: 4.6rem;">
                             <img src="../assets/coin.png" class="w-4 h-4 mr-2"> <span>1000</span>
                         </div>
                         <div class="absolute flex items-center justify-center text-brand-yellow text-2xl font-semibold p-2 bg-white-50 rounded-full pointer-events-none" style="top: 9.5rem; left: 25.4rem;">
