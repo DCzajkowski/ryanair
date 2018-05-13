@@ -6,36 +6,27 @@
 
 <script>
     import Phaser from 'phaser'
-
-    function preload() {
-        //
-    }
-
-    function create() {
-        //
-    }
+    import Game from '@/modules/Game'
 
     export default {
         mounted() {
-            const game = new Phaser.Game({
-                parent: 'canvas',
-                type: Phaser.AUTO,
-                width: window.innerWidth * window.devicePixelRatio,
-                height: window.innerHeight * window.devicePixelRatio,
-                width: 1280,
-                height: 720,
-                backgroundColor: '#000000',
-                physics: {
-                    default: 'arcade',
-                    arcade: {
-                        gravity: { y: 0 },
+            var config = {
+                    type: Phaser.AUTO,
+                    width: window.innerWidth,
+                    height: window.innerHeight,
+                    backgroundColor: '#000000',
+                    parent: 'canvas',
+                    
+                    physics: {
+                        default: 'arcade',
+                        arcade: {          
+                            debug: true,
+                        }
                     },
-                },
-                scene: {
-                    preload: preload,
-                    create: create,
-                },
-            })
+                    scene: [ Game ]
+                };
+
+            var game = new Phaser.Game(config);
+            }
         }
-    }
 </script>
