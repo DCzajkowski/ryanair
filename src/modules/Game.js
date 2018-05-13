@@ -16,30 +16,60 @@ export default class Game extends Phaser.Scene {
         //load cloud images
         for (let i=1;i<=9;i++){
             this.load.image('cloud'+i, '/static/clouds/cloud'+i+'.png');
-            
+
         }
 
         //animation
 
-        this.load.spritesheet('suitcase', '/static/animation/poziomo.png', { frameWidth: 595, frameHeight: 842, endFrame: 842 });
-        this.load.spritesheet('coinSpritesheet','/static/animation/coin.png', {frameWidth:64, frameHeight: 64, endFrame: 64});
+
+        if(Math.random()>=0.5){
+            this.load.image('bg', '/static/france.png');
+        }else{
+            this.load.image('bg', '/static/italy.png');
+        }
+
+        this.load.spritesheet('coinSpritesheet','../static/animation/coin.png', {frameWidth:64, frameHeight: 64, endFrame: 64});
 
 
     }
 
     setup(){
-        this.CLOUD_SPAWN_TIME = 500
+        this.CLOUD_SPAWN_TIME = 900
         this.COIN_SPAWN_TIME = 5000
+        this.BASE_CLOUD_SPEED = 200
 
-        this.COLISION_SPEED = 80
+        this.interval = setInterval(()=>{
+            this.CLOUD_SPAWN_TIME= Math.max(this.CLOUD_SPAWN_TIME-1,200)
+            this.BASE_CLOUD_SPEED+=1
+            console.log(this.CLOUD_SPAWN_TIME)
+            console.log(this.BASE_CLOUD_SPEED)
+        },100)
+
+        this.COLISION_SPEED = 120
     }
 
 
     create (){
+
+        this.bgs = this.add.group();
+        this.bg1 = this.physics.add.image(window.innerWidth/2,window.innerHeight/2,'bg')
+        this.bg1.setFrame(window.innerWidth,window.innerHeight)
+        this.bg1.setScale(0.53)
+        this.bg2 = this.physics.add.image(window.innerWidth/2 + this.bg1.getBounds().width,window.innerHeight/2,'bg')
+        this.bg2.setFrame(window.innerWidth,window.innerHeight)
+        this.bg2.setScale(0.53)
+
+        this.bgs.add(this.bg1)
+        this.bgs.add(this.bg2)
+
+
+        this.bg1.setDepth(0)
         //plane
 
+
         this.physicsPlane = this.physics.add.sprite(400, window.innerHeight / 2, 'plane');
-        this.physicsPlane.setScale(0.3)
+        this.physicsPlane.setScale(0.14)
+        this.physicsPlane.setDepth(1)
         console.log(this.physicsPlane)
         this.physicsPlane.body.setCircle(220)
         this.physicsPlane.body.setOffset(90,-40)
@@ -52,26 +82,30 @@ export default class Game extends Phaser.Scene {
         this.lastTimeSpawnedCloud = 0;
         this.lastTimeSpawnedCoin = 0;
         this.clouds = this.add.group();
+        this.clouds.setDepth(3)
         this.coins = this.add.group();
+        this.coins.setDepth(2);
 
         //coin overlapping
 
         this.physics.add.overlap(this.physicsPlane, this.coins, (A,B) =>{
             this.coins.remove(B);
             B.destroy()
-            window.vm.$store.commit('addCoin')           
+            window.vm.$store.commit('addCoinInGame')
+            console.log(this.score);
         });
-    
+
 
         //cloud setup
         for (let i=1;i<=27;i++){
             let y = (i%9)+1
 
             let cl = this.physics.add.image(3000,100*y,'cloud'+y)
+            cl.baseVelocity = -((Math.random()*200)+200)
             this.clouds.add(cl)
             this.clouds.killAndHide(cl)
         }
-    
+
 
 
         //Plane overlaps clouds
@@ -83,7 +117,7 @@ export default class Game extends Phaser.Scene {
             }, 50)
         });
 
-        
+
 
 
         //animation
@@ -97,6 +131,10 @@ export default class Game extends Phaser.Scene {
         };
 
         this.anims.create(coinAnimConfig);
+
+        this.interval2 = setInterval(() => {
+            window.vm.$store.commit('addScore')
+        }, 500)
     }
 
 
@@ -113,15 +151,31 @@ export default class Game extends Phaser.Scene {
 
         if (this.input.activePointer.isDown) {
 
-            let rad = Math.atan2(this.input.activePointer.y - this.physicsPlane.y, this.input.activePointer.x - this.physicsPlane.x)
+            let rad = Math.atan2(this.input.activePointer.y - this.physicsPlane.y, Math.abs(this.input.activePointer.x - this.physicsPlane.x))
             this.physicsPlane.setRotation(rad)
 
-            this.physicsPlane.setVelocityY(400 * Math.sin(rad))
+            this.physicsPlane.setVelocityY(this.BASE_CLOUD_SPEED* 1.5 * Math.sin(rad))
 
+            //this.manageSpeed(rad)
 
 
         }
 
+        this.checkForGameOver()
+
+
+
+        this.bgs.getChildren().forEach((el)=>{
+            el.setVelocityX(-this.BASE_CLOUD_SPEED*0.3)
+            if(el.getBounds().x + el.getBounds().width < 0){
+                el.x = el.getBounds().width * 1.5
+            }
+        })
+
+    }
+
+    manageSpeed(rad){
+        this.clouds.getChildren().forEach((el)=> el.setVelocityX(Math.min(Math.cos(rad) * 0.5 * el.baseVelocity,0.7*el.baseVelocity)))
     }
 
     handleCloudsOverlapingByPlane(){
@@ -129,7 +183,11 @@ export default class Game extends Phaser.Scene {
         if (this.planeOverlaps){
             this.physicsPlane.setVelocityX(-this.COLISION_SPEED)
         }else{
-            this.physicsPlane.setVelocityX(0)
+            if(this.physicsPlane.x > window.innerWidth / 2){
+                this.physicsPlane.setVelocityX(0)
+            }else {
+                this.physicsPlane.setVelocityX(10)
+            }
         }
 
     }
@@ -138,14 +196,15 @@ export default class Game extends Phaser.Scene {
         if (this.time.now - this.lastTimeSpawnedCloud > this.CLOUD_SPAWN_TIME){
             this.lastTimeSpawnedCloud = this.time.now
             let x = window.innerWidth
-            let y = (Math.random()*(window.innerHeight+400))-200
+            let y = (Math.random()*(window.innerHeight+50))-50
             let cl = this.clouds.getFirstDead(false, x, y)
             if (cl!==null){
                 cl.x += cl.frame.width / 2
                 cl.active=true
                 cl.setVisible(true)
-                cl.setVelocityX(-((Math.random()*200)+200))
-                cl.setScale((Math.random()*1.7)+0.7)
+                cl.setVelocityX(-((Math.random()*200)+this.BASE_CLOUD_SPEED))
+                cl.baseVelocity = -((Math.random()*200)+this.BASE_CLOUD_SPEED)
+                cl.setScale((Math.random()*1)+0.4)
                 cl.setSize(cl.frame.width/1.3, cl.frame.height/ 1.3)
                 cl.setOffset((cl.frame.width - cl.frame.width/1.3) /2 ,(cl.frame.height - cl.frame.height/ 1.3)/2)
 
@@ -170,19 +229,26 @@ export default class Game extends Phaser.Scene {
             coin.anims.play('coinAnim');
             if (coin!==null){
                 this.coins.add(coin)
-                coin.setVelocityX(-250)
-                
+                coin.setVelocityX(-(this.BASE_CLOUD_SPEED + 50))
+                coin.baseVelocity = -((Math.random()*200)+200)
                 coin.x +=coin.frame.width / 2
                 coin.setCircle(coin.frame.width/2,-10,-6)
-                coin.setScale(0.5)
+                coin.setScale(0.3)
 
 
-                
+
             }
-            
+
         }
     }
 
+    checkForGameOver(){
+        if (this.physicsPlane.x + this.physicsPlane.getBounds().width / 2 < 0){
+            clearInterval(this.interval)
+            clearInterval(this.interval2)
+            window.vm.$router.push({ name: 'GameOver' })
+        }
+    }
     removeCoinsWhenOffScreen(){
         this.coins.getChildren().forEach(el => {
             if (el.x + el.frame.width < 0){
