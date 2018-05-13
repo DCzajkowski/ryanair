@@ -30,6 +30,9 @@ export default new Vuex.Store({
         unlockPlane(state, plane) {
             plane.unlocked = true
         },
+        addCoin(state) {
+            state.coins += 1
+        },
     },
     getters: {
         coins(state) {

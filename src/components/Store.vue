@@ -1,6 +1,6 @@
 <template>
     <div class="flex h-full justify-center bg-darken">
-        <div class="absolute pin-l pin-t -ml-16">
+        <div class="absolute pin-l pin-t -ml-16" @click="$router.push({ name: 'Menu' })">
             <img src="../assets/logo.png">
         </div>
 

@@ -20,8 +20,8 @@
             const game = new Phaser.Game({
                 parent: 'canvas',
                 type: Phaser.AUTO,
-                // width: window.innerWidth * window.devicePixelRatio,
-                // height: window.innerHeight * window.devicePixelRatio,
+                width: window.innerWidth * window.devicePixelRatio,
+                height: window.innerHeight * window.devicePixelRatio,
                 width: 1280,
                 height: 720,
                 backgroundColor: '#000000',
