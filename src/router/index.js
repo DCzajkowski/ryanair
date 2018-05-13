@@ -5,6 +5,7 @@ import Game from '@/components/Game'
 import Store from '@/components/Store'
 import Case from '@/components/Case'
 import GameOver from '@/components/GameOver'
+import Card from '@/components/Card'
 
 Vue.use(Router)
 
@@ -34,6 +35,11 @@ export default new Router({
             path: '/gameover',
             name: 'GameOver',
             component: GameOver,
+        },
+        {
+            path: '/card',
+            name: 'Card',
+            component: Card,
         },
     ],
 })
