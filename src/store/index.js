@@ -14,7 +14,7 @@ export default new Vuex.Store({
         createPersistedState(),
     ],
     state: {
-        coins: 30000,
+        coins: 300000,
         coinsInGame: 0,
         planes: [
             { id: 1, url: 'plane-ryanair.png', price: 100, unlocked: true },
