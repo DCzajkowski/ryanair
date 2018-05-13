@@ -7,15 +7,15 @@
 <script>
     import Phaser from 'phaser'
 
+    function preload() {
+        //
+    }
+
+    function create() {
+        //
+    }
+
     export default {
-        methods: {
-            preload() {
-                //
-            },
-            create() {
-                //
-            },
-        },
         mounted() {
             const game = new Phaser.Game({
                 parent: 'canvas',
@@ -32,8 +32,8 @@
                     },
                 },
                 scene: {
-                    preload: this.preload,
-                    create: this.create,
+                    preload: preload,
+                    create: create,
                 },
             })
         }

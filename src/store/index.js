@@ -15,12 +15,14 @@ export default new Vuex.Store({
     ],
     state: {
         coins: 300,
+        coinsInGame: 0,
         planes: [
             { id: 1, url: 'plane-ryanair.png', price: 100, unlocked: true },
             { id: 2, url: 'plane-blue.png', price: 200, unlocked: false },
             { id: 3, url: 'plane-red.png', price: 300, unlocked: false },
             { id: 4, url: 'plane-purple.png', price: 200, unlocked: false },
         ],
+        score: 0,
         // products: [
         //     {
         //         id: 1,
@@ -44,6 +46,20 @@ export default new Vuex.Store({
         },
         addCoin(state) {
             state.coins += 1
+            state.coinsInGame += 1
+        },
+        addCoins(state, amount) {
+            state.coins += amount
+            state.coinsInGame += amount
+        },
+        addToScore(state, score) {
+            state.score += score
+        },
+        addScore(state) {
+            state.score += 10
+        },
+        coinsInGame(state, coins) {
+            state.coinsInGame = coins
         },
     },
     getters: {
@@ -53,8 +69,14 @@ export default new Vuex.Store({
         planes(state) {
             return state.planes
         },
+        score(state) {
+            return state.score
+        },
         // randomProduct(state) {
         //     return state.products[_.random(0, state.products.length - 1)]
         // },
+        coinsInGame(state) {
+            return state.coinsInGame
+        },
     },
 })

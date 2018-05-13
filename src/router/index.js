@@ -4,6 +4,7 @@ import Menu from '@/components/Menu'
 import Game from '@/components/Game'
 import Store from '@/components/Store'
 import Case from '@/components/Case'
+import GameOver from '@/components/GameOver'
 
 Vue.use(Router)
 
@@ -28,6 +29,11 @@ export default new Router({
             path: '/case/:id',
             name: 'Case',
             component: Case,
+        },
+        {
+            path: '/gameover',
+            name: 'GameOver',
+            component: GameOver,
         },
     ],
 })
