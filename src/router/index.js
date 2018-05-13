@@ -35,5 +35,10 @@ export default new Router({
             name: 'GameOver',
             component: GameOver,
         },
+        {
+            path: '/card',
+            name: 'Card',
+            component: Card,
+        },
     ],
 })
