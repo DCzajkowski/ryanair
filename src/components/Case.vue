@@ -18,10 +18,13 @@
 
     let chosen_chest;
     var greenBriefcase;
+    var redBriefcase;
+    var yellowBriefcase;
     var card;
+    var chest_opened = false;
 
     var chests = [];
-
+    let id = null;
 
 
 
@@ -59,13 +62,19 @@
 
     function preload() {
         
-        this.load.image('suitcase1','/static/green_case.png');
+        this.load.image('green_suitcase','/static/green_case.png');
+        this.load.image('red_suitcase','/static/red_case.png');
+        this.load.image('yellow_suitcase','/static/yellow_case.png');
+
         this.load.image('bg','/static/bg.png');
 
 
         //DZIEMICH
 
-        this.load.spritesheet('greenBriefcaseStylesheet', '/static/animation/greenBriefCaseSpriteSheet.png', {frameWidth:711, frameHeight: 441, endFrame: 100});
+        this.load.spritesheet('greenBriefcaseStylesheet', '/static/animation/greenBriefCaseSpriteSheet.png', {frameWidth:711, frameHeight: 441});
+        this.load.spritesheet('redBriefcaseStylesheet', '/static/animation/redBriefCaseSpriteSheet.png', {frameWidth:711, frameHeight: 441});
+        this.load.spritesheet('yellowBriefcaseStylesheet', '/static/animation/yellowBriefCaseSpriteSheet.png', {frameWidth:711, frameHeight: 441});
+
         this.load.spritesheet('ryanairCard', '/static/animation/card.png', {frameWidth:162, frameHeight: 227, endFrame: 100})
 
     }
@@ -74,14 +83,36 @@
         //console.log(this)
         this.add.sprite(width/2,height/2,'bg')
 
-        chosen_chest = this.physics.add.image(width/2, height/2 + 50, 'suitcase1');
+        switch(id){
+            case 1:
+                chosen_chest = this.physics.add.image(width/2, height/2, 'green_suitcase');
+                break;
+            case 2:
+                chosen_chest = this.physics.add.image(width/2, height/2, 'red_suitcase');
+                break;
+            case 3:
+                chosen_chest = this.physics.add.image(width/2, height/2, 'yellow_suitcase');
+                break;
+        }
+        
+    
         //chosen_chest.setInteractive();
         chosen_chest.setVisible(false);
         chosen_chest.setScale(0.4)
         chosen_chest.on('clicked', (chest) => openChest(chest), this);
 
-
-        chests = [this.physics.add.image(width/2 - CHEST_SPACING, height/2 + 50, 'suitcase1'), this.physics.add.image(width/2, height/2 + 50, 'suitcase1'), this.physics.add.image(width/2 + CHEST_SPACING, height/2 + 50, 'suitcase1') ]
+        switch(id){
+            case 1:
+                chests = [this.physics.add.image(width/2 - CHEST_SPACING, height/2, 'green_suitcase'), this.physics.add.image(width/2, height/2, 'green_suitcase'), this.physics.add.image(width/2 + CHEST_SPACING, height/2, 'green_suitcase') ]
+                break;
+            case 2:
+                chests = [this.physics.add.image(width/2 - CHEST_SPACING, height/2, 'red_suitcase'), this.physics.add.image(width/2, height/2, 'red_suitcase'), this.physics.add.image(width/2 + CHEST_SPACING, height/2, 'red_suitcase') ]
+                break;
+            case 3:
+                chests = [this.physics.add.image(width/2 - CHEST_SPACING, height/2, 'yellow_suitcase'), this.physics.add.image(width/2, height/2, 'yellow_suitcase'), this.physics.add.image(width/2 + CHEST_SPACING, height/2, 'yellow_suitcase') ]
+                break;
+        }
+       
 
         for (var i = chests.length - 1; i >= 0; i--) {
             chests[i].setInteractive();
@@ -96,110 +127,110 @@
         }, this);
 
         //DZIEMICH
-        var briefcaseConfig = {
+        var greenBriefcaseConfig = {
             key: 'greenBriefcaseAnim',
-            frames: this.anims.generateFrameNumbers('greenBriefcaseStylesheet', {start:0, end:100}),
+            frames: this.anims.generateFrameNumbers('greenBriefcaseStylesheet', {start:0, end:10}),
             frameRate: 12,
             
         };
-
-
-        
+        var redBriefcaseConfig = {
+            key: 'redBriefcaseAnim',
+            frames: this.anims.generateFrameNumbers('redBriefcaseStylesheet', {start:0, end:10}),
+            frameRate: 12,
+            
+        };
+        var yellowBriefcaseConfig = {
+            key: 'yellowBriefcaseAnim',
+            frames: this.anims.generateFrameNumbers('yellowBriefcaseStylesheet', {start:0, end:10}),
+            frameRate: 12,
+            
+        };
         var ryanairCardConfig = {
             key: 'ryanairCardAnim',
             frames: this.anims.generateFrameNumbers('ryanairCard', {start:0, end:5}),
             frameRate: 8,
         };
 
-        greenBriefcase = this.add.sprite(width/2, height/2+50, 'greenBriefcaseStylesheet');
-        card = this.add.sprite(width/2, height/2 + 50, 'ryanairCard');
+        greenBriefcase = this.add.sprite(width/2, height/2, 'greenBriefcaseStylesheet');
+        redBriefcase = this.add.sprite(width/2, height/2, 'redBriefcaseStylesheet');
+        yellowBriefcase = this.add.sprite(width/2, height/2, 'yellowBriefcaseStylesheet');
+        
+        card = this.add.sprite(width/2-20, height/2, 'ryanairCard');
         card.setVisible(false)
-        greenBriefcase.setVisible(false)
 
-        this.anims.create(briefcaseConfig);
+        greenBriefcase.setVisible(false)
+        redBriefcase.setVisible(false)
+        yellowBriefcase.setVisible(false)
+        
+        
+
+        this.anims.create(greenBriefcaseConfig);
+        this.anims.create(redBriefcaseConfig);
+        this.anims.create(yellowBriefcaseConfig);
         this.anims.create(ryanairCardConfig);
 
-
+        greenBriefcase.on('animationcomplete', startCard);
+        redBriefcase.on('animationcomplete', startCard);
+        yellowBriefcase.on('animationcomplete', startCard);
     }
 
-    function update ()
-    {
-        if(has_been_clicked)
-        {
+    function update (){
 
+        if(has_been_clicked){
             for (var i = chests.length - 1; i >= 0; i--) {
-                //console.log(chests[i])
                 if(chests[i].body.velocity.y == 0)
                 {
-                //console.log(chests[i].body.position.x)
-
                     if(Math.abs(width/2 - (chests[i].body.position.x + chests[i].displayWidth/2)) < 30)
                     {
-                        // if(chests[i].body.velocity.x != 0)
-                        // {
-                        //     chests[i].setScale(0.8);
-                        // }
-                        // else
-                        // {
                             chests[i].setVelocityX(0);
-                            //chests[i].setPosition(width/2, height/2 + 100)
-                            //chests[i].setScale(1.1);
                             chosen_chest.setVisible(true);
                             chosen_chest.setInteractive();
-                            
                             chests[i].setVisible(false)
-                        // }
-                        
+                            has_been_clicked = false;       
                     }
-                    
-                    //has_been_clicked = false;
-        // card.anims.play('ryanairCardAnim');
-        
-        // card.setInteractive();
-        // card.on('clicked', (chest) =>{
-        //     console.log('card clicked');
-        // });
-
-        // this.input.on('gameobjectup', (pointer, gameObject)=>{
-        //     gameObject.emit('clicked', gameObject);
-        // });
-                
-                // console.log(greenBriefcase);
-                // greenBriefcase.on('animationcomplete', startCard);
-                // greenBriefcase.anims.play('greenBriefcaseAnim').setScale(4);
                 }
             }   
         }
     }
-        function openChest (chest)
-    {
-
-        chest.off('clicked', openChest);
-        chest.input.enabled = false;
-        chest.setVisible(false)
-        console.log("otowrz")
-        greenBriefcase.setVisible(true)
+    function openChest (chest){
+        chosen_chest.input.enabled = false;
+        chosen_chest.setInteractive(false);
+        chosen_chest.setVisible(false)
         
-        console.log('aaaaaaa')
-        greenBriefcase.on('animationcomplete', startCard);
-        greenBriefcase.anims.play('greenBriefcaseAnim').setScale(0.4);
+        chest_opened = true;
+        switch(id){
+            case 1:
+                greenBriefcase.setVisible(true)
+                greenBriefcase.anims.play('greenBriefcaseAnim').setScale(0.4);
+                break;
+            case 2:
+                redBriefcase.setVisible(true)
+                redBriefcase.anims.play('redBriefcaseAnim').setScale(0.4);
+                break;
+            case 3:
+                yellowBriefcase.setVisible(true)
+                yellowBriefcase.anims.play('yellowBriefcaseAnim').setScale(0.4);
+                break;
 
-         //odpalic animacie Dziemicha
+        }
+        
+        }
 
-
-    }
     function startCard() {
         card.setVisible(true);
         card.anims.play('ryanairCardAnim');
         card.setInteractive();
         card.on('clicked', (chest) =>{
-            console.log('card clicked');
+            window.vm.$router.push({ name: 'Card' })
         });
     }
 
     export default {
         methods: {
             //
+        },
+        created() {
+            id = this.$route.params.id
         },
         mounted() {
             const game = new Phaser.Game({
